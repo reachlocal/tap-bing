@@ -7,7 +7,6 @@ from singer.catalog import Catalog, CatalogEntry
 from singer.schema import Schema
 import requests
 from datetime import datetime
-from concurrent.futures import ThreadPoolExecutor
 import threading
 import csv
 from contextlib import closing
