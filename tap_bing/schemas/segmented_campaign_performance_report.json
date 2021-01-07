@@ -1,0 +1,54 @@
+{
+    "type": [
+        "object"
+    ],
+    "additionalProperties": false,
+    "properties": {
+        "AccountId": {
+            "type": "integer"
+        },
+        "AccountName": {
+            "type": "string"
+        },
+        "CampaignId": {
+            "type": "integer"
+        },
+        "CampaignName": {
+            "type": "string"
+        },
+        "DeviceType": {
+            "type": "string"
+        },
+        "Network": {
+            "type": "string"
+        },
+        "TimePeriod": {
+            "type": "string",
+            "format": "date"
+        },
+        "AveragePosition": {
+            "type": "number"
+        },
+        "Clicks": {
+            "type": "integer"
+        },
+        "Impressions": {
+            "type": "integer"
+        },
+        "Spend": {
+            "type": "number"
+        },
+        "ImpressionSharePercent": {
+            "type": "number"
+        },
+        "ImpressionLostToBudgetPercent": {
+            "type": "number"
+        },
+        "ImpressionLostToRankAggPercent": {
+            "type": "number"
+        },
+        "LowQualityImpressionsPercent": {
+            "type": "number"
+        }
+    }
+}

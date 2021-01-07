@@ -1,0 +1,75 @@
+{
+    "type": [
+        "object"
+    ],
+    "additionalProperties": false,
+    "properties": {
+        "AccountId": {
+            "type": "integer"
+        },
+        "AccountName": {
+            "type": "string"
+        },
+        "CampaignId": {
+            "type": "integer"
+        },
+        "Keyword": {
+            "type": "string"
+        },
+        "TimePeriod": {
+            "type": "string",
+            "format": "date"
+        },
+        "AverageCpc": {
+            "type": "number"
+        },
+        "AveragePosition": {
+            "type": "number"
+        },
+        "Clicks": {
+            "type": "integer"
+        },
+        "Ctr": {
+            "type": "string"
+        },
+        "Impressions": {
+            "type": "integer"
+        },
+        "Spend": {
+            "type": "number"
+        },
+        "DestinationUrl": {
+            "type": "string"
+        },
+        "DeliveredMatchType": {
+            "type": "string"
+        },
+        "CurrentMaxCpc": {
+            "type": "number"
+        },
+        "AdId": {
+            "type": "integer"
+        },
+        "AdGroupId": {
+            "type": "integer"
+        },
+        "KeywordId": {
+            "type": "integer"
+        },
+        "CampaignName": {
+            "type": "string"
+        },
+        "QualityScore": {
+            "type": "string"
+        },
+        "TrackingTemplate": {
+            "type": "string"
+        },
+        "CustomParameters": {
+            "type": "string"
+        },
+        "FinalUrl": {
+            "type": "string"
+        }
+    }
+}

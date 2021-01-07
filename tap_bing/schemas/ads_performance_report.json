@@ -1,0 +1,60 @@
+{
+    "type": [
+        "object"
+    ],
+    "additionalProperties": false,
+    "properties": {
+        "AccountId": {
+            "type": "integer"
+        },
+        "AccountName": {    
+            "type": "string"
+        },
+        "TimePeriod": {     
+            "type": "string",
+            "format": "date"
+        },
+        "AdGroupId": {      
+            "type": "integer"
+        },
+        "AdId": {
+            "type": "integer"
+        },
+        "Impressions": {    
+            "type": "integer"
+        },
+        "Clicks": {
+            "type": "integer"
+        },
+        "Spend": {
+            "type": "number"
+        },
+        "AverageCpc": {
+            "type": "number"
+        },
+        "AveragePosition": {
+            "type": "number"
+        },
+        "AdTitle": {
+            "type": "string"
+        },
+        "DestinationUrl": {
+            "type": "string"
+        },
+        "Keyword": {
+            "type": "string"
+        },
+        "Param1": {
+            "type": "string"
+        },
+        "Param2": {
+            "type": "string"
+        },
+        "Param3": {
+            "type": "string"
+        },
+        "FinalUrl": {
+            "type": "string"
+        }
+    }
+}

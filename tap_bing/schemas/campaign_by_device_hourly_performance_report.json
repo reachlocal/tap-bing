@@ -1,0 +1,38 @@
+{
+    "type": [
+        "object"
+    ],
+    "additionalProperties": false,
+    "properties": {
+        "AccountId": {
+            "type": "integer"
+        },
+        "AccountName": {    
+            "type": "string"
+        },
+        "CampaignId": {     
+            "type": "integer"
+        },
+        "CampaignName": {   
+            "type": "string"
+        },
+        "DeviceType": {     
+            "type": "string"
+        },
+        "TimePeriod": {
+            "type": "string"
+        },
+        "AveragePosition": {
+            "type": "number"
+        },
+        "Clicks": {
+            "type": "integer"
+        },
+        "Impressions": {
+            "type": "integer"
+        },
+        "Spend": {
+            "type": "number"
+        }
+    }
+}

@@ -1,0 +1,57 @@
+{
+    "type": [
+        "object"
+    ],
+    "additionalProperties": false,
+    "properties": {
+        "AccountId": {
+            "type": "integer"
+        },
+        "AccountName": {
+            "type": "string"
+        },
+        "CampaignId": {
+            "type": "integer"
+        },
+        "CampaignName": {
+            "type": "string"
+        },
+        "AdGroupId": {
+            "type": "integer"
+        },
+        "AdGroupName": {
+            "type": "string"
+        },
+        "TimePeriod": {
+            "type": "string",
+            "format": "date"
+        },
+        "DeliveredMatchType": {
+            "type": "string"
+        },
+        "SearchQuery": {
+            "type": "string"
+        },
+        "Keyword": {
+            "type": "string"
+        },
+        "KeywordId": {
+            "type": "integer"
+        },
+        "AverageCpc": {
+            "type": "number"
+        },
+        "AveragePosition": {
+            "type": "number"
+        },
+        "Clicks": {
+            "type": "integer"
+        },
+        "Impressions": {
+            "type": "integer"
+        },
+        "Spend": {
+            "type": "number"
+        }
+    }
+}

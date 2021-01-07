@@ -60,7 +60,44 @@ class BingReportingService:
             'campaign_performance_report': {
                 'report_request': 'CampaignPerformanceReportRequest',
                 'scope': 'AccountThroughCampaignReportScope',
-                'column_type': 'ArrayOfCampaignPerformanceReportColumn'
+                'column_type': 'CampaignPerformanceReportColumn',
+                'aggregation': 'Daily'
+            },
+            'keyword_performance_report': {
+                'report_request': 'KeywordPerformanceReportRequest',
+                'scope': 'AccountThroughAdGroupReportScope',
+                'column_type': 'KeywordPerformanceReportColumn',
+                'aggregation': 'Daily'
+            },
+            'ads_performance_report': {
+                'report_request': 'AdDynamicTextPerformanceReportRequest',
+                'scope': 'AccountThroughAdGroupReportScope',
+                'column_type': 'AdDynamicTextPerformanceReportColumn',
+                'aggregation': 'Daily'
+            },
+            'segmented_campaign_performance_report': {
+                'report_request': 'CampaignPerformanceReportRequest',
+                'scope': 'AccountThroughCampaignReportScope',
+                'column_type': 'CampaignPerformanceReportColumn',
+                'aggregation': 'Daily'
+            },
+            'campaign_by_device_hourly_performance_report': {
+                'report_request': 'CampaignPerformanceReportRequest',
+                'scope': 'AccountThroughCampaignReportScope',
+                'column_type': 'CampaignPerformanceReportColumn',
+                'aggregation': 'Hourly'
+            },
+            'search_query_performance_report': {
+                'report_request': 'SearchQueryPerformanceReportRequest',
+                'scope': 'AccountThroughAdGroupReportScope',
+                'column_type': 'SearchQueryPerformanceReportColumn',
+                'aggregation': 'Daily'
+            },
+            'stats_with_search_impressions_performance_report': {
+                'report_request': 'CampaignPerformanceReportRequest',
+                'scope': 'AccountThroughCampaignReportScope',
+                'column_type': 'CampaignPerformanceReportColumn',
+                'aggregation': 'Daily'
             }
         }
 
@@ -170,7 +207,9 @@ class BingReportingService:
             LOGGER.info("There is no report data for the submitted report request parameters.")
             return
 
-        for record in list(report_container.report_records):
+        records = list(report_container.report_records)
+        LOGGER.info(f'Retrieved {len(records)} report rows')
+        for record in records:
             obj = self.map_record(record)
             singer.write_record(self.stream, obj)
 
@@ -183,6 +222,8 @@ class BingReportingService:
             value = ''
             if prop[1]['type'] == 'integer':
                 value = record.int_value(key)
+            elif key.endswith('Percent'):
+                value = float(record.value(key).replace('%', '')) if record.value(key) else 0
             elif prop[1]['type'] == 'number':
                 value = record.float_value(key)
             else:
@@ -191,7 +232,7 @@ class BingReportingService:
         return obj
 
     def get_report_request(self, account_ids):
-        aggregation = 'Daily'
+        aggregation = self.schema_map[self.stream]['aggregation']
         exclude_column_headers = False
         exclude_report_footer = True
         exclude_report_header = True
@@ -251,9 +292,9 @@ class BingReportingService:
         scope.Campaigns=None
         report_request.Scope=scope
 
-        report_columns=self.reporting_service.factory.create(self.schema_map[self.stream]['column_type'])
+        report_columns=self.reporting_service.factory.create(f'ArrayOf{self.schema_map[self.stream]["column_type"]}')
         schema_columns = list(map(lambda x: x[0], self.props))
-        report_columns.CampaignPerformanceReportColumn.append(schema_columns)
+        report_columns[self.schema_map[self.stream]["column_type"]].append(schema_columns)
         report_request.Columns=report_columns
         
         return report_request
