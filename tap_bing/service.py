@@ -156,7 +156,7 @@ class BingReportingService:
         accounts=[]
 
         page_index = 0
-        PAGE_SIZE=100
+        PAGE_SIZE = 1000
         found_last_page = False
 
         while (not found_last_page):
@@ -167,6 +167,8 @@ class BingReportingService:
                 PageInfo=paging,
                 Predicates=predicates
             )
+
+            LOGGER.info(f'Retrieved accounts page #{page_index + 1}')
 
             if search_accounts_response is not None and hasattr(search_accounts_response, 'AdvertiserAccount'):
                 accounts.extend(search_accounts_response['AdvertiserAccount'])
