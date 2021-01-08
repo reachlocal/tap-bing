@@ -61,43 +61,50 @@ class BingReportingService:
                 'report_request': 'CampaignPerformanceReportRequest',
                 'scope': 'AccountThroughCampaignReportScope',
                 'column_type': 'CampaignPerformanceReportColumn',
-                'aggregation': 'Daily'
+                'aggregation': 'Daily',
+                'account_page_size': 1000
             },
             'keyword_performance_report': {
                 'report_request': 'KeywordPerformanceReportRequest',
                 'scope': 'AccountThroughAdGroupReportScope',
                 'column_type': 'KeywordPerformanceReportColumn',
-                'aggregation': 'Daily'
+                'aggregation': 'Daily',
+                'account_page_size': 300
             },
             'ads_performance_report': {
                 'report_request': 'AdDynamicTextPerformanceReportRequest',
                 'scope': 'AccountThroughAdGroupReportScope',
                 'column_type': 'AdDynamicTextPerformanceReportColumn',
-                'aggregation': 'Daily'
+                'aggregation': 'Daily',
+                'account_page_size': 1000
             },
             'segmented_campaign_performance_report': {
                 'report_request': 'CampaignPerformanceReportRequest',
                 'scope': 'AccountThroughCampaignReportScope',
                 'column_type': 'CampaignPerformanceReportColumn',
-                'aggregation': 'Daily'
+                'aggregation': 'Daily',
+                'account_page_size': 1000
             },
             'campaign_by_device_hourly_performance_report': {
                 'report_request': 'CampaignPerformanceReportRequest',
                 'scope': 'AccountThroughCampaignReportScope',
                 'column_type': 'CampaignPerformanceReportColumn',
-                'aggregation': 'Hourly'
+                'aggregation': 'Hourly',
+                'account_page_size': 1000
             },
             'search_query_performance_report': {
                 'report_request': 'SearchQueryPerformanceReportRequest',
                 'scope': 'AccountThroughAdGroupReportScope',
                 'column_type': 'SearchQueryPerformanceReportColumn',
-                'aggregation': 'Daily'
+                'aggregation': 'Daily',
+                'account_page_size': 1000
             },
             'stats_with_search_impressions_performance_report': {
                 'report_request': 'CampaignPerformanceReportRequest',
                 'scope': 'AccountThroughCampaignReportScope',
                 'column_type': 'CampaignPerformanceReportColumn',
-                'aggregation': 'Daily'
+                'aggregation': 'Daily',
+                'account_page_size': 1000
             }
         }
 
@@ -135,7 +142,7 @@ class BingReportingService:
         accounts = self.search_accounts_by_user_id(self.customer_service, user.Id)
         
         acc_ids = list(map(lambda a: a['Id'], accounts))
-        page_size = 1000
+        page_size = self.schema_map[self.stream]['account_page_size']
         pages = [acc_ids[i:i+page_size] for i in range(0, len(acc_ids), page_size)]
         for index, ids in enumerate(pages):
             filename = f'report_{page_size} accounts_page_{index}_{datetime.now().strftime("%Y%m%dT%H%M%S")}.csv'
@@ -168,7 +175,8 @@ class BingReportingService:
                 Predicates=predicates
             )
 
-            LOGGER.info(f'Retrieved accounts page #{page_index + 1}')
+            if (page_index + 1) % 5 == 0:
+                LOGGER.info(f'Retrieved accounts page #{page_index + 1}')
 
             if search_accounts_response is not None and hasattr(search_accounts_response, 'AdvertiserAccount'):
                 accounts.extend(search_accounts_response['AdvertiserAccount'])
