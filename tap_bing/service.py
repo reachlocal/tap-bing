@@ -147,11 +147,11 @@ class BingReportingService:
         page_size = self.schema_map[self.stream]['account_page_size']
         pages = [acc_ids[i:i+page_size] for i in range(0, len(acc_ids), page_size)]
         with ThreadPoolExecutor(max_workers=5) as executor:
-            executor.map(lambda page: self.get_report_by_accounts_page(page, page_size), enumerate(pages))
+            executor.map(lambda page: self.get_report_by_accounts_page(page, page_size), pages)
 
     def get_report_by_accounts_page(self, ids, page_size):
         try:
-            filename = f'{self.stream}_report_{page_size} accounts_{datetime.now().strftime("%Y%m%dT%H%M%S")}.csv'
+            filename = f'{self.stream}_report_{ids[0]}-{ids[-1]}_accounts_{datetime.now().strftime("%Y%m%dT%H%M%S")}.csv'
             self.get_report_for_accounts(ids, filename)
             file_path = f'{FILE_DIRECTORY}{filename}'
             if os.path.isfile(file_path):
