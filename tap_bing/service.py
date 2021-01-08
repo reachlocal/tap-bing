@@ -71,7 +71,7 @@ class BingReportingService:
                 'scope': 'AccountThroughAdGroupReportScope',
                 'column_type': 'KeywordPerformanceReportColumn',
                 'aggregation': 'Daily',
-                'account_page_size': 300
+                'account_page_size': 200
             },
             'ads_performance_report': {
                 'report_request': 'AdDynamicTextPerformanceReportRequest',
@@ -146,13 +146,13 @@ class BingReportingService:
         acc_ids = list(map(lambda a: a['Id'], accounts))
         page_size = self.schema_map[self.stream]['account_page_size']
         pages = [acc_ids[i:i+page_size] for i in range(0, len(acc_ids), page_size)]
-        with ThreadPoolExecutor(max_workers=5) as executor:
-            executor.map(lambda page: self.get_report_by_accounts_page(page, page_size), pages)
+        with ThreadPoolExecutor(max_workers=15) as executor:
+            executor.map(lambda arg: self.get_report_by_accounts_page(arg[1], page_size, arg[0]), enumerate(pages))
 
-    def get_report_by_accounts_page(self, ids, page_size):
+    def get_report_by_accounts_page(self, ids, page_size, index):
         try:
             filename = f'{self.stream}_report_{ids[0]}-{ids[-1]}_accounts_{datetime.now().strftime("%Y%m%dT%H%M%S")}.csv'
-            self.get_report_for_accounts(ids, filename)
+            self.get_report_for_accounts(ids, filename, index)
             file_path = f'{FILE_DIRECTORY}{filename}'
             if os.path.isfile(file_path):
                 os.remove(file_path)
@@ -203,7 +203,7 @@ class BingReportingService:
             suds_object.__setitem__(element[0], None)
         return suds_object
 
-    def get_report_for_accounts(self, account_ids, filename):
+    def get_report_for_accounts(self, account_ids, filename, index):
         try:
             report_request = self.get_report_request(account_ids)
             
@@ -215,9 +215,10 @@ class BingReportingService:
                 timeout_in_milliseconds=TIMEOUT_IN_MILLISECONDS # You may optionally cancel the download after a specified time interval.
             )
 
-            LOGGER.info(f'Awaiting download_report for {len(account_ids)} accounts...')
+            LOGGER.info(f'Awaiting download_report for {len(account_ids)} accounts, page {index}')
             self.download_report(reporting_download_parameters)
         except Exception as ex:
+            LOGGER.info('Error while downloading report')
             LOGGER.info(ex)
 
     def download_report(self, reporting_download_parameters):
