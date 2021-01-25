@@ -135,7 +135,7 @@ class BingReportingService:
         try:
             authorization_data.authentication.request_oauth_tokens_by_refresh_token(self.config['refreshToken'])
         except OAuthTokenRequestException:
-            LOGGER.info('An authentication error occured')
+            LOGGER.error('An authentication error occured')
 
     def get_reports(self):
         user = self.customer_service.GetUser(
@@ -157,8 +157,7 @@ class BingReportingService:
             if os.path.isfile(file_path):
                 os.remove(file_path)
         except Exception as ex:
-            LOGGER.info('An exception occured')
-            LOGGER.info(ex)
+            LOGGER.error(f'[{self.stream}] An exception occured: {ex}')
 
     def search_accounts_by_user_id(self, customer_service, user_id):
         predicates={
@@ -218,8 +217,7 @@ class BingReportingService:
             LOGGER.info(f'Awaiting download_report for {len(account_ids)} accounts, page {index}')
             self.download_report(reporting_download_parameters)
         except Exception as ex:
-            LOGGER.info('Error while downloading report')
-            LOGGER.info(ex)
+            LOGGER.error(f'[{self.stream}] Error while downloading report: {ex}')
 
     def download_report(self, reporting_download_parameters):
 
