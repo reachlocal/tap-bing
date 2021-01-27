@@ -12,7 +12,6 @@ from datetime import datetime
 
 from time import gmtime, strftime
 from suds import WebFault
-from retrying import retry
 
 ENVIRONMENT='production'
 REPORT_FILE_FORMAT='Csv'
@@ -147,7 +146,7 @@ class BingReportingService:
         acc_ids = list(map(lambda a: a['Id'], accounts))
         page_size = self.schema_map[self.stream]['account_page_size']
         pages = [acc_ids[i:i+page_size] for i in range(0, len(acc_ids), page_size)]
-        with ThreadPoolExecutor(max_workers=15) as executor:
+        with ThreadPoolExecutor(max_workers=5) as executor:
             executor.map(lambda arg: self.get_report_by_accounts_page(arg[1], page_size, arg[0]), enumerate(pages))
 
     def get_report_by_accounts_page(self, ids, page_size, index):
@@ -220,7 +219,6 @@ class BingReportingService:
         except Exception as ex:
             LOGGER.error(f'[{self.stream}] Error while downloading report: {ex}')
 
-    @retry(stop_max_attempt_number=3)
     def download_report(self, reporting_download_parameters):
 
         report_container = self.reporting_service_manager.download_report(reporting_download_parameters)
