@@ -14,7 +14,8 @@ setup(
         "singer-python",
         "requests",
         "bingads==13.0.7",
-        "futures3==1.0.0"
+        "futures3==1.0.0",
+        "retrying==1.3.3"
     ],
     entry_points="""
     [console_scripts]

@@ -12,6 +12,7 @@ from datetime import datetime
 
 from time import gmtime, strftime
 from suds import WebFault
+from retrying import retry
 
 ENVIRONMENT='production'
 REPORT_FILE_FORMAT='Csv'
@@ -219,6 +220,7 @@ class BingReportingService:
         except Exception as ex:
             LOGGER.error(f'[{self.stream}] Error while downloading report: {ex}')
 
+    @retry(stop_max_attempt_number=3)
     def download_report(self, reporting_download_parameters):
 
         report_container = self.reporting_service_manager.download_report(reporting_download_parameters)
